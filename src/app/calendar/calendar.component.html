@@ -1,0 +1,37 @@
+<app-new-meal *ngIf="isNewMeal" (setMeal)="setMeal($event)"></app-new-meal>
+<div class="calendar-page" *ngIf="!isNewMeal">
+    <div class="settings">
+        <img src="../../assets/brightness_7_24px_outlined.svg" alt="Settings">
+        <p>{{monthNames[date.getMonth()]}}</p>
+    </div>
+    <div class="calendar">
+        <div class="add-ingestion" (click)="isNewMeal= true">
+            <img src="../../assets/143506.png" alt="Plus">
+        </div>
+        <div class="hours">
+            <div *ngFor="let hour of hours">
+                <p>{{hour}}</p>
+            </div>
+        </div>
+        <div *ngFor="let day of days; let i=index" class="day-net">
+            <div class="text">
+                <p>{{dayCalories[day]}}</p>
+                <div [ngClass]="{'day': i === date.getDay() - 1 }">
+                    <p>{{day}}</p>
+                </div>
+            </div>
+            <div class="col">
+                <div class="block" *ngFor="let hour of hours">
+                    <div class="item"
+                        [style.background-color]="ingestions[day][hour] !==
+                        undefined ? '#799CF4' : ''">
+                        <div *ngIf="ingestions[day][hour] !== undefined">
+                            <span>{{ingestions[day][hour]?.title}}</span>
+                            <span>{{ingestions[day][hour]?.calories}}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

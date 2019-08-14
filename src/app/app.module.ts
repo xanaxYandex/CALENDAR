@@ -1,16 +1,32 @@
+import { MainService } from './main.service';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
+
 import { AppComponent } from './app.component';
+import { StartPageComponent } from './start-page/start-page.component';
+import { CalendarComponent } from './calendar/calendar.component';
+import { SettingsComponent } from './settings/settings.component';
+import { NewMealComponent } from './new-meal/new-meal.component';
+import { CurrentMealComponent } from './current-meal/current-meal.component';
+import { DayModalComponent } from './day-modal/day-modal.component';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
-  declarations: [
-    AppComponent
-  ],
-  imports: [
-    BrowserModule
-  ],
-  providers: [],
-  bootstrap: [AppComponent]
+    declarations: [
+        AppComponent,
+        StartPageComponent,
+        CalendarComponent,
+        SettingsComponent,
+        NewMealComponent,
+        CurrentMealComponent,
+        DayModalComponent
+    ],
+    imports: [
+        BrowserModule,
+        FormsModule
+    ],
+    providers: [MainService],
+    bootstrap: [AppComponent]
 })
 export class AppModule { }

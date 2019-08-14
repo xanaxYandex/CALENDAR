@@ -1,0 +1,122 @@
+.calendar-page {
+    height: 100%;
+
+    .calendar {
+        padding: 0px 0px 20px 20px;
+        display: flex;
+        font: normal 14px/16px Roboto Condensed;
+
+        .add-ingestion {
+            box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.2);
+            z-index: 7;
+            position: fixed;
+            bottom: 10px;
+            right: 10px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: white;
+
+            img {
+                position: relative;
+                top: 15%;
+                left: 15%;
+                width: 70%;
+                height: auto;
+            }
+        }
+
+        .hours {
+            width: 46px;
+            position: relative;
+            top: 83px;
+            display: flex;
+            flex-direction: column;
+
+            div {
+                margin-bottom: 39px;
+
+                p {
+                    font-weight: 300;
+                    color: #413F3F;
+                    margin: 0px;
+                }
+            }
+        }
+
+        .day-net {
+            width: 50px;
+
+            .text {
+                height: 70px;
+                z-index: 5;
+                width: 50px;
+                background-color: white;
+                position: fixed;
+
+                p {
+                    font-weight: 700;
+                    margin: 18px 0px 2px 12px;
+                }
+
+                .day {
+                    background-color: #799CF4;
+                    border-radius: 50%;
+                    color: white;
+                    width: auto;
+                    height: auto;
+                }
+
+            }
+        }
+
+        .col {
+            position: relative;
+            top: 90px;
+            width: 50px;
+            display: flex;
+            flex-direction: column;
+
+            .block {
+                border: 1px solid rgb(163, 163, 163);
+                height: 53px;
+
+                .item {
+                    position: relative;
+                    height: 100%;
+                    width: 100%;
+
+                    div {
+                        padding: 2px 0px 2px 2px;
+                        color: white;
+                        font: 300 12px/14px Roboto Condensed;
+                        display: flex;
+                        flex-direction: column;
+
+                        span {
+                            &:nth-child(2) {
+                                margin-top: 8px;
+                                font-weight: normal;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .settings {
+        z-index: 6;
+        background: rgb(255, 255, 255);
+        position: fixed;
+        width: 63px;
+        height: 70px;
+        display: flex;
+        flex-direction: column;
+
+        p {
+            margin: 5px 0px 0px 10px;
+            font: 700 14px/16px Roboto Condensed;
+        }
+    }
+}

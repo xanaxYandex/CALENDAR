@@ -1,11 +1,11 @@
-import { Component, Output, EventEmitter } from '@angular/core';
+import { Component, Output, OnInit, EventEmitter, Input } from '@angular/core';
 
 @Component({
     selector: 'app-new-meal',
     templateUrl: './new-meal.component.html',
     styleUrls: ['./new-meal.component.scss']
 })
-export class NewMealComponent {
+export class NewMealComponent implements OnInit {
 
     public date: Date = new Date();
 
@@ -19,16 +19,21 @@ export class NewMealComponent {
         carbohydrates: 0
     };
 
+    @Input() newMeal: object;
     @Output() setMeal: EventEmitter<any> = new EventEmitter();
 
     constructor() { }
+
+    ngOnInit() {
+        this.time = this.newMeal['hour'];
+    }
 
     addMeal(isCancel: boolean) {
         if (isCancel) {
             this.setMeal.emit(false);
         } else {
             this.setMeal.emit({
-                day: this.date.getDay() - 1,
+                day: this.newMeal['day'],
                 hour: this.time,
                 ingestion: this.ingestion
             });

@@ -61,6 +61,7 @@
 
                 .day {
                     background-color: #799CF4;
+                    box-shadow: 0 0 10px #799CF4;
                     border-radius: 50%;
                     color: white;
                     width: auto;
@@ -94,8 +95,12 @@
                         flex-direction: column;
 
                         span {
+                            white-space: nowrap;
+                            overflow: hidden;
+                            text-overflow: ellipsis;
+
                             &:nth-child(2) {
-                                margin-top: 8px;
+                                margin-top: 20px;
                                 font-weight: normal;
                             }
                         }

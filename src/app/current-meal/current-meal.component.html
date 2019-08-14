@@ -1,1 +1,17 @@
-<p>current-meal works!</p>
+<div class="current-meal">
+    <p class="cancel" (click)="backToCalendar()">Back</p>
+    <h1>{{ingestion['ingestion']['title']}}</h1>
+    <div class="ingestion">
+        <span for="">Time</span>
+        <p>{{ingestion['now']}}</p>
+        <span for="">Kcal</span>
+        <p>{{ingestion['ingestion']['calories']}}</p>
+        <span for="">Fats(gm)</span>
+        <p>{{ingestion['ingestion']['fats']}}</p>
+        <span for="">Proteins(gm)</span>
+        <p>{{ingestion['ingestion']['proteins']}}</p>
+        <span for="">Carbohydrates(gm)</span>
+        <p>{{ingestion['ingestion']['carbohydrates']}}</p>
+        <img src="" alt="">
+    </div>
+</div>

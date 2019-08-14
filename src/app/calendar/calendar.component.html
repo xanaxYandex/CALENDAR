@@ -1,6 +1,10 @@
-<app-new-meal *ngIf="isNewMeal" (setMeal)="setMeal($event)"></app-new-meal>
-<div class="calendar-page" *ngIf="!isNewMeal">
-    <div class="settings">
+<app-new-meal *ngIf="isNewMeal" (setMeal)="setMeal($event)" [newMeal]="forNewMeal"></app-new-meal>
+<app-settings *ngIf="isSettings" (userSettings)="settings()"></app-settings>
+<app-current-meal *ngIf="isCurrentMeal" (currentMeal)="toCurrMeal()" [ingestion]="currentIngestion">
+</app-current-meal>
+<app-day-modal *ngIf="isDay" (nowDay)="toDay()" [ingestion]="currentIngestion"></app-day-modal>
+<div class="calendar-page" *ngIf="!isNewMeal && !isSettings && !isCurrentMeal && !isDay">
+    <div class="settings" (click)="settings()">
         <img src="../../assets/brightness_7_24px_outlined.svg" alt="Settings">
         <p>{{monthNames[date.getMonth()]}}</p>
     </div>
@@ -15,17 +19,16 @@
         </div>
         <div *ngFor="let day of days; let i=index" class="day-net">
             <div class="text">
-                <p>{{dayCalories[day]}}</p>
-                <div [ngClass]="{'day': i === date.getDay() - 1 }">
+                <p [style.color]="dayCalories[day]['color']">{{dayCalories[day]['kcal']}}</p>
+                <div [ngClass]="{'day': i === date.getDay() - 1 }" (click)="nowDay(day)">
                     <p>{{day}}</p>
                 </div>
             </div>
             <div class="col">
                 <div class="block" *ngFor="let hour of hours">
-                    <div class="item"
-                        [style.background-color]="ingestions[day][hour] !==
-                        undefined ? '#799CF4' : ''">
-                        <div *ngIf="ingestions[day][hour] !== undefined">
+                    <div class="item" [style.background-color]="ingestions[day][hour] !==
+                        undefined ? '#799CF4' : ''" (click)="addIngestion(day, hour)">
+                        <div *ngIf="ingestions[day][hour] !== undefined" (click)="currentMeal(day, hour)">
                             <span>{{ingestions[day][hour]?.title}}</span>
                             <span>{{ingestions[day][hour]?.calories}}</span>
                         </div>

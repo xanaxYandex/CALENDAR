@@ -10,7 +10,7 @@ import { SettingsComponent } from './settings/settings.component';
 import { NewMealComponent } from './new-meal/new-meal.component';
 import { CurrentMealComponent } from './current-meal/current-meal.component';
 import { DayModalComponent } from './day-modal/day-modal.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
     declarations: [
@@ -24,7 +24,8 @@ import { FormsModule } from '@angular/forms';
     ],
     imports: [
         BrowserModule,
-        FormsModule
+        FormsModule,
+        ReactiveFormsModule
     ],
     providers: [MainService],
     bootstrap: [AppComponent]

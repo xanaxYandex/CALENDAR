@@ -1,1 +1,57 @@
-<p>settings works!</p>
+<div class="settings">
+    <p class="cancel" (click)="saveSettings()">Cancel</p>
+    <h1>Personal settings</h1>
+    <div class="personal">
+        <label>Gender</label>
+        <div class="themes">
+            <div class="paragraph" (click)="selectOption(0)">
+                <span class="circuit">
+                    <span class="circle" *ngIf="circles[0]"></span>
+                </span>
+                <span class="selector">Male</span>
+            </div>
+            <div class="paragraph" (click)="selectOption(1)">
+                <span class="circuit">
+                    <span class="circle" *ngIf="circles[1]"></span>
+                </span>
+                <span class="selector">Female</span>
+            </div>
+        </div>
+        <label for="">Weight(kg)</label>
+        <input type="text" [(ngModel)]="settings['weight']">
+        <hr>
+        <label for="title">Height(sm)</label>
+        <input type="text" id="title" [(ngModel)]="settings['height']">
+        <hr>
+        <div class="calc-btn">
+            <button (click)="calcParams()">Calculate rate for day</button>
+        </div>
+
+        <div class="time">
+            <div>
+                <label for="">Min kcal</label>
+                <label for="">Max kcal</label>
+            </div>
+            <div>
+                <input type="text" [(ngModel)]="settings['minKcal']">
+                <input type="text" [(ngModel)]="settings['maxKcal']">
+            </div>
+            <div>
+                <hr>
+                <hr>
+            </div>
+        </div>
+        <label for="">Fats(gm)</label>
+        <input type="text" [(ngModel)]="settings['fats']">
+        <hr>
+        <label for="">Proteins(gm)</label>
+        <input type="text" [(ngModel)]="settings['proteins']">
+        <hr>
+        <label for="">Carbohydrates(gm)</label>
+        <input type="text" [(ngModel)]="settings['carbohydrates']">
+        <hr>
+    </div>
+    <div class="save-btn">
+        <button (click)="saveSettings()">Save settings</button>
+    </div>
+</div>

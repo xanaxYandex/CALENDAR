@@ -1,0 +1,38 @@
+.current-meal {
+    font: 700 18px/18px Roboto Condensed;
+
+    .cancel {
+        margin: 8px 0px 0px 8px;
+    }
+
+    h1 {
+        font-weight: 400;
+        margin: 8px 0px 30px 0px;
+        text-align: center;
+    }
+
+    .ingestion {
+        padding: 0px 50px 0px 36px;
+        display: flex;
+        flex-direction: column;
+
+        span {
+            font-size: 16px;
+            line-height: 19px;
+        }
+
+        p {
+            font-size: 18px;
+            line-height: 21px;
+        }
+
+        img {
+            border: 1px solid burlywood;
+            width: 298px;
+            height: 130px;
+        }
+
+
+    }
+
+}

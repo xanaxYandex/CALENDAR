@@ -4,9 +4,7 @@ import {
     Output,
     EventEmitter,
     Input
-}
-
-    from '@angular/core';
+} from '@angular/core';
 
 @Component({
     selector: 'app-current-meal',

@@ -1,4 +1,20 @@
 .new-meal {
+    .logo {
+        background: transparent;
+        position: fixed;
+        bottom: 5px;
+        right: 5px;
+
+        img {
+            z-index: 1;
+        }
+
+        .transparent {
+            filter: alpha(Opacity=50);
+            opacity: 0.25;
+        }
+    }
+
     font: 700 18px/18px Roboto Condensed;
 
     .cancel {
@@ -23,6 +39,7 @@
 
         input {
             margin: 20px 0px 0px 0px;
+            width: 298px;
             background: transparent;
             border: 0px;
             font-size: 18px;
@@ -30,6 +47,7 @@
         }
 
         hr {
+            transition: 0.5s;
             border-color: black;
             margin: 0px 30px 20px 0px;
         }

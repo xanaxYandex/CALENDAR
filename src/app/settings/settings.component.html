@@ -1,5 +1,8 @@
 <div class="settings">
-    <p class="cancel" (click)="saveSettings()">Cancel</p>
+    <p class="cancel" (click)="saveSettings(true)">Cancel</p>
+    <div class="logo">
+        <img src="../../assets/logo.png" alt="" class="transparent">
+    </div>
     <h1>Personal settings</h1>
     <div class="personal">
         <label>Gender</label>
@@ -18,11 +21,14 @@
             </div>
         </div>
         <label for="">Weight(kg)</label>
-        <input type="text" [(ngModel)]="settings['weight']">
-        <hr>
-        <label for="title">Height(sm)</label>
-        <input type="text" id="title" [(ngModel)]="settings['height']">
-        <hr>
+        <input type="text" [formControl]="inpWeight">
+        <hr [ngStyle]="{'box-shadow': !weightValid ? '0 0 10px red' : 'none'}">
+        <label for="">Height(sm)</label>
+        <input type="text" [formControl]="inpHeight">
+        <hr [ngStyle]="{'box-shadow': !heightValid ? '0 0 10px red' : 'none'}">
+        <label for="">Age(yrs)</label>
+        <input type="text" [formControl]="inpAge">
+        <hr [ngStyle]="{'box-shadow': !ageValid ? '0 0 10px red' : 'none'}">
         <div class="calc-btn">
             <button (click)="calcParams()">Calculate rate for day</button>
         </div>
@@ -33,25 +39,25 @@
                 <label for="">Max kcal</label>
             </div>
             <div>
-                <input type="text" [(ngModel)]="settings['minKcal']">
-                <input type="text" [(ngModel)]="settings['maxKcal']">
+                <input type="text" [formControl]="inpMinKcal">
+                <input type="text" [formControl]="inpMaxKcal">
             </div>
             <div>
-                <hr>
-                <hr>
+                <hr [ngStyle]="{'box-shadow': !minKcalValid ? '0 0 10px red' : 'none'}">
+                <hr [ngStyle]="{'box-shadow': !maxKcalValid ? '0 0 10px red' : 'none'}">
             </div>
         </div>
         <label for="">Fats(gm)</label>
-        <input type="text" [(ngModel)]="settings['fats']">
-        <hr>
+        <input type="text" [formControl]="inpFats">
+        <hr [ngStyle]="{'box-shadow': !fatsValid ? '0 0 10px red' : 'none'}">
         <label for="">Proteins(gm)</label>
-        <input type="text" [(ngModel)]="settings['proteins']">
-        <hr>
+        <input type="text" [formControl]="inpProteins">
+        <hr [ngStyle]="{'box-shadow': !proteinsValid ? '0 0 10px red' : 'none'}">
         <label for="">Carbohydrates(gm)</label>
-        <input type="text" [(ngModel)]="settings['carbohydrates']">
-        <hr>
+        <input type="text" [formControl]="inpCarbohydrates">
+        <hr [ngStyle]="{'box-shadow': !carbohydratesValid ? '0 0 10px red' : 'none'}">
     </div>
     <div class="save-btn">
-        <button (click)="saveSettings()">Save settings</button>
+        <button (click)="saveSettings(false)">Save settings</button>
     </div>
 </div>

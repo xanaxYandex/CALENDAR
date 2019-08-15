@@ -1,4 +1,22 @@
 .settings {
+    padding-bottom: 30px;
+
+    .logo {
+        background: transparent;
+        position: fixed;
+        bottom: 5px;
+        right: 5px;
+
+        img {
+            z-index: 1;
+        }
+
+        .transparent {
+            filter: alpha(Opacity=50);
+            opacity: 0.25;
+        }
+    }
+
     font: 700 18px/18px Roboto Condensed;
 
     .cancel {

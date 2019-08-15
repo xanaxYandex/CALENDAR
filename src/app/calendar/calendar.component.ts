@@ -71,8 +71,8 @@ export class CalendarComponent implements OnInit {
         },
     };
     public forNewMeal: object = {
-        day: '',
-        hour: ''
+        day: this.days[this.date.getDay() - 1],
+        hour: '00:00'
     };
     public calories: object = {
         min: 0,
@@ -113,6 +113,7 @@ export class CalendarComponent implements OnInit {
 
     setMeal(event) {
         this.isNewMeal = false;
+
         if (event !== false) {
             const INGESTIONS = this.ingestions[event['day']][event['hour']];
             this.mainService.addIngestion({
@@ -120,10 +121,10 @@ export class CalendarComponent implements OnInit {
                 hour: event['hour'],
                 ingestion: event['ingestion']
             });
-            this.dayCalories[event['day']]['kcal'] += +INGESTIONS['calories'];
-            this.dayCalories[event['day']]['proteins'] += +INGESTIONS['proteins'];
-            this.dayCalories[event['day']]['fats'] += +INGESTIONS['fats'];
-            this.dayCalories[event['day']]['carbohydrates'] += +INGESTIONS['carbohydrates'];
+            this.dayCalories[event['day']]['kcal'] += +event['ingestion']['calories'];
+            this.dayCalories[event['day']]['proteins'] += +event['ingestion']['proteins'];
+            this.dayCalories[event['day']]['fats'] += +event['ingestion']['fats'];
+            this.dayCalories[event['day']]['carbohydrates'] += +event['ingestion']['carbohydrates'];
             this.setKcalColor(event['day']);
         }
     }
@@ -163,12 +164,15 @@ export class CalendarComponent implements OnInit {
     }
 
     nowDay(day: string) {
-        this.currentIngestion = this.dayCalories[day];
+        this.currentIngestion = {
+            info: this.dayCalories[day],
+            thisDay: day,
+            ingestions: this.ingestions[day]
+        };
         this.toDay();
     }
 
     toDay() {
         this.isDay = !this.isDay;
     }
-
 }

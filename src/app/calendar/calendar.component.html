@@ -4,6 +4,9 @@
 </app-current-meal>
 <app-day-modal *ngIf="isDay" (nowDay)="toDay()" [ingestion]="currentIngestion"></app-day-modal>
 <div class="calendar-page" *ngIf="!isNewMeal && !isSettings && !isCurrentMeal && !isDay">
+    <div class="logo">
+        <img src="../../assets/logo.png" alt="" class="transparent">
+    </div>
     <div class="settings" (click)="settings()">
         <img src="../../assets/brightness_7_24px_outlined.svg" alt="Settings">
         <p>{{monthNames[date.getMonth()]}}</p>

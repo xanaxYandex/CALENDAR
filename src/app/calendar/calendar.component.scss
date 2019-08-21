@@ -1,7 +1,6 @@
 .calendar-page {
     z-index: 2;
     background: rgba($color: rgb(255, 255, 255), $alpha: 1);
-    height: 100%;
 
     .logo {
         background: transparent;
@@ -21,7 +20,6 @@
 
     .calendar {
         z-index: 4;
-        padding: 0px 0px 20px 20px;
         display: flex;
         font: normal 14px/16px Roboto Condensed;
 
@@ -46,9 +44,10 @@
         }
 
         .hours {
+            background: white;
+            z-index: 8;
+            padding: 80px 0px 0px 10px;
             width: 40px;
-            position: relative;
-            top: 83px;
             display: flex;
             flex-direction: column;
 
@@ -63,37 +62,49 @@
             }
         }
 
+        .wrapCalConent {
+            display: flex;
+            padding-left: 20px;
+        }
+
         .day-net {
-            z-index: 2;
             width: 50px;
 
             .text {
+                padding-top: 5px;
+                position: sticky;
+                top: 0px;
+                z-index: 9;
                 height: 70px;
-                z-index: 5;
                 width: 50px;
                 background-color: white;
-                position: fixed;
 
                 p {
                     font-weight: 700;
-                    margin: 18px 0px 2px 12px;
+                    margin: 0px 0px 10px 12px;
+                }
+
+                div {
+                    p {
+                        font-weight: 700;
+                        margin: 5px 0px 3px 12px;
+                    }
                 }
 
                 .day {
+                    display: inline;
                     background-color: #799CF4;
                     box-shadow: 0 0 10px #799CF4;
                     border-radius: 50%;
                     color: white;
-                    width: auto;
-                    height: auto;
                 }
 
             }
         }
 
         .col {
-            position: relative;
-            top: 90px;
+            margin-top: 10px;
+            z-index: 3;
             width: 50px;
             display: flex;
             flex-direction: column;
@@ -132,9 +143,9 @@
     }
 
     .settings {
-        z-index: 6;
-        background: rgb(255, 255, 255);
         position: fixed;
+        z-index: 10;
+        background: rgb(255, 255, 255);
         width: 63px;
         height: 70px;
         display: flex;

@@ -1,6 +1,8 @@
 import { MainService } from './../main.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnChanges } from '@angular/core';
 import { MONTH_NAMES, DAYS, HOURS } from '../data/data';
+import { range, BehaviorSubject } from 'rxjs';
+import { Logs, logging } from 'selenium-webdriver';
 
 @Component({
     selector: 'app-calendar',
@@ -9,70 +11,32 @@ import { MONTH_NAMES, DAYS, HOURS } from '../data/data';
 })
 export class CalendarComponent implements OnInit {
 
+    // --------EXTENDS FROM SERVICE-------------------
+
+    public currentWeekDays: number[] = [];
+    public hours = HOURS;
+    public daysArr: string[] = this.mainService.daysArr;
+    public ingestions: object = {};
+    public date: Date = new Date();
+
+    // --------COMPONENT TOGGLES----------------------
+
     public isNewMeal = false;
     public isSettings = false;
     public isCurrentMeal = false;
     public isDay = false;
-    public date: Date = new Date();
-    public monthNames = MONTH_NAMES;
-    public days = DAYS;
-    public hours = HOURS;
-    public ingestions: object;
-    public currentIngestion: object;
-    public dayCalories: object = {
-        Mon: {
-            kcal: 0,
-            fats: 0,
-            proteins: 0,
-            carbohydrates: 0,
-            color: ''
-        },
-        Tue: {
-            kcal: 0,
-            fats: 0,
-            proteins: 0,
-            carbohydrates: 0,
-            color: ''
-        },
-        Wed: {
-            kcal: 0,
-            fats: 0,
-            proteins: 0,
-            carbohydrates: 0,
-            color: ''
-        },
-        Thu: {
-            kcal: 0,
-            fats: 0,
-            proteins: 0,
-            carbohydrates: 0,
-            color: ''
-        },
-        Fri: {
-            kcal: 0,
-            fats: 0,
-            proteins: 0,
-            carbohydrates: 0,
-            color: ''
-        },
-        Sat: {
-            kcal: 0,
-            fats: 0,
-            proteins: 0,
-            carbohydrates: 0,
-            color: ''
-        },
-        Sun: {
-            kcal: 0,
-            fats: 0,
-            proteins: 0,
-            carbohydrates: 0,
-            color: ''
-        },
-    };
+
+    // -----------------------------------------------
+
+    public currentDay = new Date().getDate();
+    public isStarted = true;
+    public keysArr: string[] = [];
+    public monthNames: string[] = MONTH_NAMES;
+    public currentIngestion: object = {};
+    public dayCalories: object = {};
     public forNewMeal: object = {
-        day: this.days[this.date.getDay() - 1],
-        hour: '00:00'
+        day: new Date().getDate(),
+        hour: '05:00'
     };
     public calories: object = {
         min: 0,
@@ -85,35 +49,63 @@ export class CalendarComponent implements OnInit {
     };
 
     constructor(private mainService: MainService) {
-        this.ngOnInit();
-        this.days.forEach(day => {
-            this.hours.forEach(hour => {
-                const INGESTION = this.ingestions[day][hour];
-                if (INGESTION !== undefined) {
-                    this.dayCalories[day]['kcal'] += +INGESTION['calories'];
-                    this.dayCalories[day]['proteins'] += +INGESTION['proteins'];
-                    this.dayCalories[day]['fats'] += +INGESTION['fats'];
-                    this.dayCalories[day]['carbohydrates'] += +INGESTION['carbohydrates'];
-                    this.setKcalColor(day);
-                }
-            });
-        });
+        this.setCorrectDay();
     }
 
     ngOnInit() {
-        this.ingestions = this.mainService.allIngestions;
+        this.ingestions = this.mainService.getIngestions(this.currentDay);
+        this.updateDays();
+        this.setDefaultCalories();
         this.mainService.userSettings.subscribe(result => {
             this.calories['min'] = +result['minKcal'];
             this.calories['max'] = +result['maxKcal'];
-            this.days.forEach(day => {
+            this.currentWeekDays.forEach(day => {
                 this.setKcalColor(day);
             });
         });
+        if (this.isStarted) {
+            this.currentWeekDays.forEach(day => {
+                this.hours.forEach(hour => {
+                    const INGESTION = this.ingestions[day][hour];
+                    if (INGESTION !== undefined) {
+                        this.dayCalories[day]['kcal'] += +INGESTION['calories'];
+                        this.dayCalories[day]['proteins'] += +INGESTION['proteins'];
+                        this.dayCalories[day]['fats'] += +INGESTION['fats'];
+                        this.dayCalories[day]['carbohydrates'] += +INGESTION['carbohydrates'];
+                        this.setKcalColor(day);
+                    }
+                });
+            });
+            this.isStarted = false;
+        }
+    }
+
+    setDefaultCalories() {
+        this.dayCalories = {};
+        this.currentWeekDays.forEach(elem => {
+            this.dayCalories[elem] = {
+                kcal: 0,
+                proteins: 0,
+                fats: 0,
+                carbohydrates: 0,
+                color: ''
+            };
+        });
+    }
+
+    updateDays() {
+        this.currentWeekDays = [];
+        this.keysArr = [];
+        Object.keys(this.ingestions).forEach(elem => this.keysArr.push(elem));
+        if (this.currentWeekDays.length === 0) {
+            range(+this.keysArr[0], this.keysArr.length).subscribe(result => {
+                this.currentWeekDays.push(result);
+            });
+        }
     }
 
     setMeal(event) {
         this.isNewMeal = false;
-
         if (event !== false) {
             const INGESTIONS = this.ingestions[event['day']][event['hour']];
             this.mainService.addIngestion({
@@ -129,7 +121,7 @@ export class CalendarComponent implements OnInit {
         }
     }
 
-    setKcalColor(day: string) {
+    setKcalColor(day: number) {
         const INGESTION = this.dayCalories[day]['kcal'];
         if (+INGESTION > this.calories['max']) {
             this.dayCalories[day]['color'] = this.colors['red'];
@@ -140,10 +132,12 @@ export class CalendarComponent implements OnInit {
         }
     }
 
-    addIngestion(day: string, hour: string) {
-        this.forNewMeal['day'] = day;
-        this.forNewMeal['hour'] = hour;
-        this.isNewMeal = true;
+    addIngestion(day: number, hour: string) {
+        if (day <= this.date.getDate()) {
+            this.forNewMeal['day'] = day;
+            this.forNewMeal['hour'] = hour;
+            this.isNewMeal = true;
+        }
     }
 
     settings() {
@@ -151,7 +145,7 @@ export class CalendarComponent implements OnInit {
         this.mainService.updateSettings();
     }
 
-    currentMeal(day: string, hour: string) {
+    currentMeal(day: number, hour: string) {
         this.currentIngestion = {
             ingestion: this.ingestions[day][hour],
             now: hour
@@ -163,10 +157,10 @@ export class CalendarComponent implements OnInit {
         this.isCurrentMeal = !this.isCurrentMeal;
     }
 
-    nowDay(day: string) {
+    nowDay(day: number) {
         this.currentIngestion = {
             info: this.dayCalories[day],
-            thisDay: day,
+            thisDay: this.daysArr[day - 1],
             ingestions: this.ingestions[day]
         };
         this.toDay();
@@ -174,5 +168,15 @@ export class CalendarComponent implements OnInit {
 
     toDay() {
         this.isDay = !this.isDay;
+    }
+
+    changeWeek(day: number) {
+        this.currentDay = day;
+        this.isStarted = true;
+        this.ngOnInit();
+    }
+
+    setCorrectDay() {
+        while (this.daysArr[--this.currentDay] !== 'Tue') { }
     }
 }

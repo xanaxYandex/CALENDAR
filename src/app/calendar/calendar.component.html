@@ -3,37 +3,43 @@
 <app-current-meal *ngIf="isCurrentMeal" (currentMeal)="toCurrMeal()" [ingestion]="currentIngestion">
 </app-current-meal>
 <app-day-modal *ngIf="isDay" (nowDay)="toDay()" [ingestion]="currentIngestion"></app-day-modal>
-<div class="calendar-page" *ngIf="!isNewMeal && !isSettings && !isCurrentMeal && !isDay">
-    <div class="logo">
-        <img src="../../assets/logo.png" alt="" class="transparent">
-    </div>
-    <div class="settings" (click)="settings()">
-        <img src="../../assets/brightness_7_24px_outlined.svg" alt="Settings">
-        <p>{{monthNames[date.getMonth()]}}</p>
-    </div>
-    <div class="calendar">
-        <div class="add-ingestion" (click)="isNewMeal= true">
-            <img src="../../assets/143506.png" alt="Plus">
+<div (swipeleft)="changeWeek(currentDay - 7)"
+    (swiperight)="changeWeek((currentDay + 7) >= 31 ? currentDay : (currentDay + 7))">
+    <div class="calendar-page" *ngIf="!isNewMeal && !isSettings && !isCurrentMeal && !isDay">
+        <div class="logo">
+            <img src="../../assets/logo.png" alt="" class="transparent">
         </div>
-        <div class="hours">
-            <div *ngFor="let hour of hours">
-                <p>{{hour}}</p>
+        <div class="settings" (click)="settings()">
+            <img src="../../assets/brightness_7_24px_outlined.svg" alt="Settings">
+            <p>{{monthNames[date.getMonth()]}}</p>
+        </div>
+        <div class="calendar">
+            <div class="add-ingestion" (click)="isNewMeal= true">
+                <img src="../../assets/143506.png" alt="Plus">
             </div>
-        </div>
-        <div *ngFor="let day of days; let i=index" class="day-net">
-            <div class="text">
-                <p [style.color]="dayCalories[day]['color']">{{dayCalories[day]['kcal']}}</p>
-                <div [ngClass]="{'day': i === date.getDay() - 1 }" (click)="nowDay(day)">
-                    <p>{{day}}</p>
+            <div class="hours" (click)="changeWeek(currentDay + 7)">
+                <div *ngFor="let hour of hours">
+                    <p>{{hour}}</p>
                 </div>
             </div>
-            <div class="col">
-                <div class="block" *ngFor="let hour of hours">
-                    <div class="item" [style.background-color]="ingestions[day][hour] !==
-                        undefined ? '#799CF4' : ''" (click)="addIngestion(day, hour)">
-                        <div *ngIf="ingestions[day][hour] !== undefined" (click)="currentMeal(day, hour)">
-                            <span>{{ingestions[day][hour]?.title}}</span>
-                            <span>{{ingestions[day][hour]?.calories}}</span>
+            <div class="wrapCalConent">
+                <div *ngFor="let day of currentWeekDays; let i=index" class="day-net">
+                    <div class="text">
+                        <p [style.color]="dayCalories[day]['color']">{{dayCalories[day]['kcal']}}</p>
+                        <div (click)="nowDay(day)">
+                            <p [ngClass]="{'day': day === date.getDate() }">{{day}}</p>
+                            <p>{{daysArr[day - 1]}}</p>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="block" *ngFor="let hour of hours">
+                            <div class="item" [style.background-color]="ingestions[day][hour] !==
+                                undefined ? '#799CF4' : ''" (click)="addIngestion(day, hour)">
+                                <div *ngIf="ingestions[day][hour] !== undefined" (click)="currentMeal(day, hour)">
+                                    <span>{{ingestions[day][hour]?.title}}</span>
+                                    <span>{{ingestions[day][hour]?.calories}}</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

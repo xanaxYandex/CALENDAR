@@ -35,6 +35,8 @@ export class NewMealComponent implements OnInit {
     constructor() { }
 
     ngOnInit() {
+        console.log(this.newMeal);
+
         this.inpTitle = new FormControl(this.ingestion['title'], [
             Validators.required,
             Validators.minLength(3),

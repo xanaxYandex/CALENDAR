@@ -1,11 +1,6 @@
-<app-new-meal *ngIf="isNewMeal" (setMeal)="setMeal($event)" [newMeal]="forNewMeal"></app-new-meal>
-<app-settings *ngIf="isSettings" (userSettings)="settings()"></app-settings>
-<app-current-meal *ngIf="isCurrentMeal" (currentMeal)="toCurrMeal()" [ingestion]="currentIngestion">
-</app-current-meal>
-<app-day-modal *ngIf="isDay" (nowDay)="toDay()" [ingestion]="currentIngestion"></app-day-modal>
 <div (swipeleft)="changeWeek(currentDay - 7)"
     (swiperight)="changeWeek((currentDay + 7) >= 31 ? currentDay : (currentDay + 7))">
-    <div class="calendar-page" *ngIf="!isNewMeal && !isSettings && !isCurrentMeal && !isDay">
+    <div class="calendar-page">
         <div class="logo">
             <img src="../../assets/logo.png" alt="" class="transparent">
         </div>
@@ -14,7 +9,7 @@
             <p>{{monthNames[date.getMonth()]}}</p>
         </div>
         <div class="calendar">
-            <div class="add-ingestion" (click)="isNewMeal= true">
+            <div class="add-ingestion" (click)="addIngestion(date.getDate())">
                 <img src="../../assets/143506.png" alt="Plus">
             </div>
             <div class="hours" (click)="changeWeek(currentDay + 7)">

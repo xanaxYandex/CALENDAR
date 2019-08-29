@@ -1,3 +1,5 @@
+import { Router } from '@angular/router';
+import { MainService } from './../main.service';
 import {
     Component,
     OnInit,
@@ -14,15 +16,19 @@ import {
 
 ) export class CurrentMealComponent implements OnInit {
 
-    @Input() ingestion: object;
+    public ingestion: object;
     @Output() currentMeal: EventEmitter<any> = new EventEmitter();
 
-    constructor() { }
+    constructor(private mainService: MainService, private router: Router) { }
 
-    ngOnInit() { }
+    ngOnInit() {
+        this.mainService.currentMeal.subscribe(result => {
+            this.ingestion = result;
+        });
+    }
 
     backToCalendar() {
-        this.currentMeal.emit();
+        this.router.navigate(['/calendar', { isCanceled: true }]);
     }
 
 }

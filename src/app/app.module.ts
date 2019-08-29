@@ -11,6 +11,7 @@ import { NewMealComponent } from './new-meal/new-meal.component';
 import { CurrentMealComponent } from './current-meal/current-meal.component';
 import { DayModalComponent } from './day-modal/day-modal.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { AppRoutingModule } from './app-routing/app-routing.module';
 
 @NgModule({
     declarations: [
@@ -25,7 +26,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     imports: [
         BrowserModule,
         FormsModule,
-        ReactiveFormsModule
+        ReactiveFormsModule,
+        AppRoutingModule
     ],
     providers: [MainService],
     bootstrap: [AppComponent]

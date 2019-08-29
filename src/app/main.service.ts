@@ -1,14 +1,74 @@
-import { DAYS, HOURS } from './data/data';
+import { HOURS } from './data/data';
 import { BehaviorSubject, range } from 'rxjs';
+
+export interface IIngestion {
+    title: string;
+    calories: number;
+    fats: number;
+    proteins: number;
+    carbohydrates: number;
+}
+
+export interface ICurrentMeal {
+    ingestion: IIngestion;
+    now: string;
+}
+
+export interface INewMeal {
+    day: number;
+    hour: string;
+    ingestion: IIngestion;
+}
+
+export interface IDayCalories {
+    kcal: number;
+    proteins: number;
+    fats: number;
+    carbohydrates: number;
+    color: string;
+}
+
+export interface ISelectedDay {
+    info: IDayCalories;
+    thisDay: string;
+    ingestions: IIngestion[];
+}
 
 export class MainService {
 
     public userSettings: BehaviorSubject<object> = new BehaviorSubject({});
+    public currentMeal: BehaviorSubject<ICurrentMeal> = new BehaviorSubject({
+        ingestion: {
+            title: '',
+            calories: 0,
+            fats: 0,
+            proteins: 0,
+            carbohydrates: 0
+        },
+        now: ''
+    });
+    public newMeal: BehaviorSubject<INewMeal> = new BehaviorSubject({
+        day: 1,
+        hour: '00:05',
+        ingestion: {
+            title: '',
+            calories: 0,
+            fats: 0,
+            proteins: 0,
+            carbohydrates: 0
+        }
+    });
     public date: Date = new Date();
     public allIngestions: {};
     public daysArr: string[] = [];
     public hours = HOURS;
     public alldaysInMonth: number[] = [];
+    public dayCalories: object = {};
+    public colors: object = {
+        yellow: '#F5D45E',
+        blue: '#799CF4',
+        red: '#F47981'
+    };
 
     constructor() {
         this.allIngestions = {
@@ -36,6 +96,7 @@ export class MainService {
         if (JSON.parse(localStorage.getItem('allIngestions')) !== null) {
             this.allIngestions = JSON.parse(localStorage.getItem('allIngestions'));
         }
+        this.setCalories();
     }
 
     daysInMonth(month, year) {
@@ -45,6 +106,22 @@ export class MainService {
     addIngestion(result: object) {
         this.allIngestions[result['day']][result['hour']] = result['ingestion'];
         localStorage.setItem('allIngestions', JSON.stringify(this.allIngestions));
+        this.setCalories();
+        this.setKcalColor(result['day']);
+    }
+
+    setKcalColor(day: number) {
+        this.userSettings.subscribe(settings => {
+            const INGESTION = this.dayCalories[day]['kcal'];
+            if (+INGESTION > settings['maxKcal']) {
+                this.dayCalories[day]['color'] = this.colors['red'];
+            } else if (+INGESTION < settings['minKcal']) {
+                this.dayCalories[day]['color'] = this.colors['yellow'];
+            } else {
+                this.dayCalories[day]['color'] = this.colors['blue'];
+            }
+        });
+
     }
 
     updateSettings() {
@@ -54,8 +131,7 @@ export class MainService {
     }
 
     getIngestions(currentDay: number) {
-        currentDay = (currentDay <= 0) ?
-            1 : currentDay;
+        currentDay = (currentDay <= 0) ? 1 : currentDay;
         const ingestion = {};
         for (const key in this.alldaysInMonth) {
             if (this.alldaysInMonth.hasOwnProperty(key)) {
@@ -69,6 +145,34 @@ export class MainService {
             }
         }
         return ingestion;
+    }
+
+    setCalories() {
+        this.setDefaultCalories();
+        this.alldaysInMonth.forEach(day => {
+            this.hours.forEach(hour => {
+                const INGESTION = this.allIngestions[day][hour];
+                if (INGESTION !== undefined) {
+                    this.dayCalories[day]['kcal'] += +INGESTION['calories'];
+                    this.dayCalories[day]['proteins'] += +INGESTION['proteins'];
+                    this.dayCalories[day]['fats'] += +INGESTION['fats'];
+                    this.dayCalories[day]['carbohydrates'] += +INGESTION['carbohydrates'];
+                    this.setKcalColor(day);
+                }
+            });
+        });
+    }
+
+    setDefaultCalories() {
+        this.alldaysInMonth.forEach(elem => {
+            this.dayCalories[elem] = {
+                kcal: 0,
+                proteins: 0,
+                fats: 0,
+                carbohydrates: 0,
+                color: ''
+            };
+        });
     }
 
     getDaysInMonth(month, year) {

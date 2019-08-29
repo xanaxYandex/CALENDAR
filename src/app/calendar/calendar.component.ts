@@ -1,8 +1,9 @@
-import { MainService } from './../main.service';
-import { Component, OnInit, OnChanges } from '@angular/core';
-import { MONTH_NAMES, DAYS, HOURS } from '../data/data';
-import { range, BehaviorSubject } from 'rxjs';
-import { Logs, logging } from 'selenium-webdriver';
+import { MainService, INewMeal } from './../main.service';
+import { Component, OnInit } from '@angular/core';
+import { MONTH_NAMES } from '../data/data';
+import { range } from 'rxjs';
+import { Router, ActivatedRoute } from '@angular/router';
+import { Route } from '@angular/compiler/src/core';
 
 @Component({
     selector: 'app-calendar',
@@ -14,41 +15,20 @@ export class CalendarComponent implements OnInit {
     // --------EXTENDS FROM SERVICE-------------------
 
     public currentWeekDays: number[] = [];
-    public hours = HOURS;
+    public hours = this.mainService.hours;
     public daysArr: string[] = this.mainService.daysArr;
     public ingestions: object = {};
-    public date: Date = new Date();
-
-    // --------COMPONENT TOGGLES----------------------
-
-    public isNewMeal = false;
-    public isSettings = false;
-    public isCurrentMeal = false;
-    public isDay = false;
 
     // -----------------------------------------------
 
-    public currentDay = new Date().getDate();
+    public date: Date = new Date();
+    public currentDay = this.date.getDate();
     public isStarted = true;
     public keysArr: string[] = [];
     public monthNames: string[] = MONTH_NAMES;
-    public currentIngestion: object = {};
     public dayCalories: object = {};
-    public forNewMeal: object = {
-        day: new Date().getDate(),
-        hour: '05:00'
-    };
-    public calories: object = {
-        min: 0,
-        max: 0
-    };
-    public colors: object = {
-        yellow: '#F5D45E',
-        blue: '#799CF4',
-        red: '#F47981'
-    };
 
-    constructor(private mainService: MainService) {
+    constructor(private mainService: MainService, private router: Router, private route: ActivatedRoute) {
         this.setCorrectDay();
     }
 
@@ -56,26 +36,15 @@ export class CalendarComponent implements OnInit {
         this.ingestions = this.mainService.getIngestions(this.currentDay);
         this.updateDays();
         this.setDefaultCalories();
-        this.mainService.userSettings.subscribe(result => {
-            this.calories['min'] = +result['minKcal'];
-            this.calories['max'] = +result['maxKcal'];
-            this.currentWeekDays.forEach(day => {
-                this.setKcalColor(day);
-            });
+        this.route.params.subscribe(params => {
+            if (params['isCanceled'] !== undefined) {
+                if (!params['isCanceled']) {
+                    this.dayCalories = this.mainService.dayCalories;
+                }
+            }
         });
         if (this.isStarted) {
-            this.currentWeekDays.forEach(day => {
-                this.hours.forEach(hour => {
-                    const INGESTION = this.ingestions[day][hour];
-                    if (INGESTION !== undefined) {
-                        this.dayCalories[day]['kcal'] += +INGESTION['calories'];
-                        this.dayCalories[day]['proteins'] += +INGESTION['proteins'];
-                        this.dayCalories[day]['fats'] += +INGESTION['fats'];
-                        this.dayCalories[day]['carbohydrates'] += +INGESTION['carbohydrates'];
-                        this.setKcalColor(day);
-                    }
-                });
-            });
+            this.dayCalories = this.mainService.dayCalories;
             this.isStarted = false;
         }
     }
@@ -104,70 +73,37 @@ export class CalendarComponent implements OnInit {
         }
     }
 
-    setMeal(event) {
-        this.isNewMeal = false;
-        if (event !== false) {
-            const INGESTIONS = this.ingestions[event['day']][event['hour']];
-            this.mainService.addIngestion({
-                day: event['day'],
-                hour: event['hour'],
-                ingestion: event['ingestion']
-            });
-            this.dayCalories[event['day']]['kcal'] += +event['ingestion']['calories'];
-            this.dayCalories[event['day']]['proteins'] += +event['ingestion']['proteins'];
-            this.dayCalories[event['day']]['fats'] += +event['ingestion']['fats'];
-            this.dayCalories[event['day']]['carbohydrates'] += +event['ingestion']['carbohydrates'];
-            this.setKcalColor(event['day']);
-        }
-    }
-
-    setKcalColor(day: number) {
-        const INGESTION = this.dayCalories[day]['kcal'];
-        if (+INGESTION > this.calories['max']) {
-            this.dayCalories[day]['color'] = this.colors['red'];
-        } else if (+INGESTION < this.calories['min']) {
-            this.dayCalories[day]['color'] = this.colors['yellow'];
-        } else {
-            this.dayCalories[day]['color'] = this.colors['blue'];
-        }
-    }
-
-    addIngestion(day: number, hour: string) {
+    addIngestion(day: number, hour: string = '07:00') {
         if (day <= this.date.getDate()) {
-            this.forNewMeal['day'] = day;
-            this.forNewMeal['hour'] = hour;
-            this.isNewMeal = true;
+            this.mainService.newMeal.next({
+                day,
+                hour,
+                ingestion: {
+                    title: '',
+                    calories: 0,
+                    fats: 0,
+                    proteins: 0,
+                    carbohydrates: 0
+                }
+            });
+            this.router.navigate(['/new']);
         }
     }
 
     settings() {
-        this.isSettings = !this.isSettings;
-        this.mainService.updateSettings();
+        this.router.navigate(['/settings']);
     }
 
     currentMeal(day: number, hour: string) {
-        this.currentIngestion = {
+        this.mainService.currentMeal.next({
             ingestion: this.ingestions[day][hour],
             now: hour
-        };
-        this.toCurrMeal();
-    }
-
-    toCurrMeal() {
-        this.isCurrentMeal = !this.isCurrentMeal;
+        });
+        this.router.navigate(['/current']);
     }
 
     nowDay(day: number) {
-        this.currentIngestion = {
-            info: this.dayCalories[day],
-            thisDay: this.daysArr[day - 1],
-            ingestions: this.ingestions[day]
-        };
-        this.toDay();
-    }
-
-    toDay() {
-        this.isDay = !this.isDay;
+        this.router.navigate([`/day/${day}`]);
     }
 
     changeWeek(day: number) {

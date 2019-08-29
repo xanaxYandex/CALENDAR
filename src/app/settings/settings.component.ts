@@ -1,3 +1,4 @@
+import { Router } from '@angular/router';
 import { MainService } from './../main.service';
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
@@ -29,7 +30,7 @@ export class SettingsComponent implements OnInit {
     public settings: object = {};
     public circles = [true, false];
 
-    constructor(private mainService: MainService) { }
+    constructor(private mainService: MainService, private router: Router) { }
 
     ngOnInit() {
         this.mainService.userSettings.subscribe(result => {
@@ -122,22 +123,22 @@ export class SettingsComponent implements OnInit {
     }
 
     saveSettings(isCancel: boolean) {
-        if (isCancel) {
-            this.userSettings.emit();
+        if (this.weightValid &&
+            this.heightValid &&
+            this.ageValid &&
+            this.minKcalValid &&
+            this.maxKcalValid &&
+            this.fatsValid &&
+            this.proteinsValid &&
+            this.carbohydratesValid
+        ) {
+            this.mainService.userSettings.next(this.settings);
+            this.mainService.updateSettings();
+            this.router.navigate(['/calendar', { isCanceled: true }]);
         } else {
-            if (this.weightValid &&
-                this.heightValid &&
-                this.ageValid &&
-                this.minKcalValid &&
-                this.maxKcalValid &&
-                this.fatsValid &&
-                this.proteinsValid &&
-                this.carbohydratesValid
-            ) {
-                this.mainService.userSettings.next(this.settings);
-                this.userSettings.emit();
-            }
+            this.router.navigate(['/calendar', { isCanceled: true }]);
         }
+
     }
 
     onChange() {

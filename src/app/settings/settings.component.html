@@ -21,14 +21,16 @@
             </div>
         </div>
         <label for="">Weight(kg)</label>
-        <input type="text" [formControl]="inpWeight">
-        <hr [ngStyle]="{'box-shadow': !weightValid ? '0 0 10px red' : 'none'}">
+        <input type="text" class="form-control" [(ngModel)]="inpWeight" #weight="ngModel" required pattern="[0-9]*"
+            minlength="2">
+        <hr [ngClass]="{'invalid-field': weight.invalid}">
         <label for="">Height(sm)</label>
-        <input type="text" [formControl]="inpHeight">
-        <hr [ngStyle]="{'box-shadow': !heightValid ? '0 0 10px red' : 'none'}">
+        <input type="text" class="form-control" [(ngModel)]="inpHeight" #height="ngModel" required pattern="[0-9]*"
+            minlength="2">
+        <hr [ngClass]="{'invalid-field': height.invalid}">
         <label for="">Age(yrs)</label>
-        <input type="text" [formControl]="inpAge">
-        <hr [ngStyle]="{'box-shadow': !ageValid ? '0 0 10px red' : 'none'}">
+        <input type="text" class="form-control" [(ngModel)]="inpAge" #age="ngModel" required pattern="[0-9]*">
+        <hr [ngClass]="{'invalid-field': age.invalid}">
         <div class="calc-btn">
             <button (click)="calcParams()">Calculate rate for day</button>
         </div>
@@ -39,25 +41,39 @@
                 <label for="">Max kcal</label>
             </div>
             <div>
-                <input type="text" [formControl]="inpMinKcal">
-                <input type="text" [formControl]="inpMaxKcal">
+                <input type="text" class="form-control" [(ngModel)]="inpMinKcal" #minkcal="ngModel" required
+                    pattern="[0-9]*">
+                <input type="text" class="form-control" [(ngModel)]="inpMaxKcal" #maxkcal="ngModel" required
+                    pattern="[0-9]*">
             </div>
             <div>
-                <hr [ngStyle]="{'box-shadow': !minKcalValid ? '0 0 10px red' : 'none'}">
-                <hr [ngStyle]="{'box-shadow': !maxKcalValid ? '0 0 10px red' : 'none'}">
+                <hr [ngClass]="{'invalid-field': minkcal.invalid}">
+                <hr [ngClass]="{'invalid-field': maxkcal.invalid}">
             </div>
         </div>
         <label for="">Fats(gm)</label>
-        <input type="text" [formControl]="inpFats">
-        <hr [ngStyle]="{'box-shadow': !fatsValid ? '0 0 10px red' : 'none'}">
+        <input type="text" class="form-control" [(ngModel)]="inpFats" #fats="ngModel" required minlength="2"
+            maxlength="4" pattern="[0-9]*">
+        <hr [ngClass]="{'invalid-field': fats.invalid}">
         <label for="">Proteins(gm)</label>
-        <input type="text" [formControl]="inpProteins">
-        <hr [ngStyle]="{'box-shadow': !proteinsValid ? '0 0 10px red' : 'none'}">
+        <input type="text" class="form-control" [(ngModel)]="inpProteins" #proteins="ngModel" required minlength="2"
+            maxlength="4" pattern="[0-9]*">
+        <hr [ngClass]="{'invalid-field': proteins.invalid}">
         <label for="">Carbohydrates(gm)</label>
-        <input type="text" [formControl]="inpCarbohydrates">
-        <hr [ngStyle]="{'box-shadow': !carbohydratesValid ? '0 0 10px red' : 'none'}">
+        <input type="text" class="form-control" [(ngModel)]="inpCarbohydrates" #carbohydrates="ngModel" required
+            minlength="2" maxlength="4" pattern="[0-9]*">
+        <hr [ngClass]="{'invalid-field': carbohydrates.invalid}">
     </div>
     <div class="save-btn">
-        <button (click)="saveSettings(false)">Save settings</button>
+        <button (click)="saveSettings(false)" [hidden]="weight.invalid || 
+                    height.invalid || 
+                    age.invalid || 
+                    minkcal.invalid || 
+                    maxkcal.invalid || 
+                    fats.invalid || 
+                    proteins.invalid ||
+                    carbohydrates.invalid
+                    ">Save
+            settings</button>
     </div>
 </div>

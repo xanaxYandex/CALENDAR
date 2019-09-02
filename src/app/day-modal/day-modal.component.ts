@@ -9,7 +9,6 @@ import { Router, ActivatedRoute } from '@angular/router';
     styleUrls: ['./day-modal.component.scss']
 })
 export class DayModalComponent implements OnInit {
-
     public ingestion: object;
     @Output() nowDay: EventEmitter<any> = new EventEmitter();
     public hours = HOURS;
@@ -26,7 +25,7 @@ export class DayModalComponent implements OnInit {
 
     constructor(private mainService: MainService, private router: Router, private route: ActivatedRoute) { }
 
-    ngOnInit() {
+    public ngOnInit(): void {
         this.route.params.subscribe(params => {
             this.ingestion = {
                 info: this.mainService.dayCalories[params['numberOfDay']],
@@ -40,7 +39,7 @@ export class DayModalComponent implements OnInit {
         });
     }
 
-    backToCalendar() {
+    public backToCalendar(): void {
         this.router.navigate(['/calendar', { isCanceled: true }]);
     }
 

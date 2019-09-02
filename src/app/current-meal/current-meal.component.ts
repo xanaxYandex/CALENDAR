@@ -12,22 +12,20 @@ import {
     selector: 'app-current-meal',
     templateUrl: './current-meal.component.html',
     styleUrls: ['./current-meal.component.scss']
-}
-
-) export class CurrentMealComponent implements OnInit {
-
+})
+export class CurrentMealComponent implements OnInit {
     public ingestion: object;
     @Output() currentMeal: EventEmitter<any> = new EventEmitter();
 
     constructor(private mainService: MainService, private router: Router) { }
 
-    ngOnInit() {
+    public ngOnInit(): void {
         this.mainService.currentMeal.subscribe(result => {
             this.ingestion = result;
         });
     }
 
-    backToCalendar() {
+    public backToCalendar(): void {
         this.router.navigate(['/calendar', { isCanceled: true }]);
     }
 

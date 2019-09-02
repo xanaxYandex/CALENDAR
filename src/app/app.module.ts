@@ -2,7 +2,6 @@ import { MainService } from './main.service';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
-
 import { AppComponent } from './app.component';
 import { StartPageComponent } from './start-page/start-page.component';
 import { CalendarComponent } from './calendar/calendar.component';

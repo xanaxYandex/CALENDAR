@@ -5,36 +5,43 @@
     <p class="cancel" (click)="addMeal(true)">Cancel</p>
     <h1>New meal</h1>
     <div class="ingestion">
-        <label for="title">Title</label>
-        <input type="text" [formControl]="inpTitle" id="title" placeholder="...here should be title of meal">
-        <hr [ngStyle]="{'box-shadow': !titleValid ? '0 0 10px red' : 'none'}">
+        <label>Title</label>
+        <input type="text" name="title" class="form-control" [(ngModel)]="inpTitle" #title="ngModel" required
+            minlength="3" pattern="[a-zA-Z0-9 ]*" placeholder="...here should be title of meal">
+        <hr [ngClass]="{'invalid-field': title.invalid}">
         <div class="time">
             <div>
                 <label for="">Kcal</label>
                 <label for="">Time</label>
             </div>
             <div>
-                <input type="text" [formControl]="inpKcal">
-                <input type=" text" [formControl]="inpTime">
+                <input type="text" class="form-control" [(ngModel)]="inpKcal" #kcal="ngModel" required pattern="[0-9]*">
+                <input type=" text" class="form-control" [(ngModel)]="inpTime" #time="ngModel" required minlength="5"
+                    maxlength="5" pattern="[0-9][0-9]:[0-9][0-9]">
             </div>
             <div>
-                <hr [ngStyle]="{'box-shadow': !kcalValid ? '0 0 15px red' : 'none'}">
-                <hr [ngStyle]="{'box-shadow': !timeValid ? '0 0 15px red' : 'none'}">
+                <hr [ngClass]="{'invalid-field': kcal.invalid}">
+                <hr [ngClass]="{'invalid-field': time.invalid}">
             </div>
         </div>
         <label for="">Fats(gm)</label>
-        <input type="text" [formControl]="inpFats">
-        <hr [ngStyle]="{'box-shadow': !fatsValid ? '0 0 10px red' : 'none'}">
+        <input type="text" class="form-control" [(ngModel)]="inpFats" #fats="ngModel" required minlength="2"
+            maxlength="4" pattern="[0-9]*">
+        <hr [ngClass]="{'invalid-field': fats.invalid}">
         <label for="">Proteins(gm)</label>
-        <input type="text" [formControl]="inpProteins">
-        <hr [ngStyle]="{'box-shadow': !proteinsValid ? '0 0 10px red' : 'none'}">
+        <input type="text" class="form-control" [(ngModel)]="inpProteins" #proteins="ngModel" required minlength="2"
+            maxlength="4" pattern="[0-9]*">
+        <hr [ngClass]="{'invalid-field': proteins.invalid}">
         <label for="">Carbohydrates(gm)</label>
-        <input type="text" [formControl]="inpCarbohydrates">
-        <hr [ngStyle]="{'box-shadow': !carbohydratesValid ? '0 0 10px red' : 'none'}">
+        <input type="text" class="form-control" [(ngModel)]="inpCarbohydrates" #carbohydrates="ngModel" required
+            minlength="2" maxlength="4" pattern="[0-9]*">
+        <hr [ngClass]="{'invalid-field': carbohydrates.invalid}">
         <p>Add photo</p>
         <img src="" alt="">
     </div>
     <div class="add-meal">
-        <button (click)="addMeal(false)">Add meal</button>
+        <button (click)="addMeal(false)"
+            [hidden]="title.invalid || kcal.invalid || time.invalid || fats.invalid || proteins.invalid || carbohydrates.invalid">
+            Add meal</button>
     </div>
 </div>

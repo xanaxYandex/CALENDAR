@@ -3,7 +3,6 @@ import { Component, OnInit } from '@angular/core';
 import { MONTH_NAMES } from '../data/data';
 import { range } from 'rxjs';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Route } from '@angular/compiler/src/core';
 
 @Component({
     selector: 'app-calendar',
@@ -28,11 +27,9 @@ export class CalendarComponent implements OnInit {
     public monthNames: string[] = MONTH_NAMES;
     public dayCalories: object = {};
 
-    constructor(private mainService: MainService, private router: Router, private route: ActivatedRoute) {
-        this.setCorrectDay();
-    }
+    constructor(private mainService: MainService, private router: Router, private route: ActivatedRoute) { }
 
-    ngOnInit() {
+    public ngOnInit(): void {
         this.ingestions = this.mainService.getIngestions(this.currentDay);
         this.updateDays();
         this.setDefaultCalories();
@@ -49,7 +46,7 @@ export class CalendarComponent implements OnInit {
         }
     }
 
-    setDefaultCalories() {
+    private setDefaultCalories(): void {
         this.dayCalories = {};
         this.currentWeekDays.forEach(elem => {
             this.dayCalories[elem] = {
@@ -62,7 +59,7 @@ export class CalendarComponent implements OnInit {
         });
     }
 
-    updateDays() {
+    private updateDays(): void {
         this.currentWeekDays = [];
         this.keysArr = [];
         Object.keys(this.ingestions).forEach(elem => this.keysArr.push(elem));
@@ -73,7 +70,7 @@ export class CalendarComponent implements OnInit {
         }
     }
 
-    addIngestion(day: number, hour: string = '07:00') {
+    public addIngestion(day: number, hour: string = '07:00'): void {
         if (day <= this.date.getDate()) {
             this.mainService.newMeal.next({
                 day,
@@ -90,29 +87,25 @@ export class CalendarComponent implements OnInit {
         }
     }
 
-    settings() {
+    public settings(): void {
         this.router.navigate(['/settings']);
     }
 
-    currentMeal(day: number, hour: string) {
+    public currentMeal(day: number, hour: string): void {
         this.mainService.currentMeal.next({
             ingestion: this.ingestions[day][hour],
             now: hour
         });
-        this.router.navigate(['/current']);
+        this.router.navigate(['/selected']);
     }
 
-    nowDay(day: number) {
+    public nowDay(day: number): void {
         this.router.navigate([`/day/${day}`]);
     }
 
-    changeWeek(day: number) {
+    public changeWeek(day: number): void {
         this.currentDay = day;
         this.isStarted = true;
         this.ngOnInit();
-    }
-
-    setCorrectDay() {
-        while (this.daysArr[--this.currentDay] !== 'Tue') { }
     }
 }

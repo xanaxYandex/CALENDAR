@@ -81,7 +81,7 @@ export class MainService {
                 }
             }
         };
-        range(1, this.daysInMonth(this.date.getMonth(), this.date.getFullYear())).subscribe(elem => this.alldaysInMonth.push(elem));
+        range(1, this.daysInMonth(this.date.getMonth() + 1, this.date.getFullYear())).subscribe(elem => this.alldaysInMonth.push(elem));
         this.alldaysInMonth.forEach(day => {
             this.allIngestions[day] = {};
         });
@@ -92,7 +92,6 @@ export class MainService {
         } else {
             this.setDefaultSettings();
         }
-
         if (JSON.parse(localStorage.getItem('allIngestions')) !== null) {
             this.allIngestions = JSON.parse(localStorage.getItem('allIngestions'));
         }
@@ -121,7 +120,6 @@ export class MainService {
                 this.dayCalories[day]['color'] = this.colors['blue'];
             }
         });
-
     }
 
     updateSettings() {

@@ -89,6 +89,10 @@
 
     }
 
+    .invalid-field {
+        box-shadow: 0 0 15px red;
+    }
+
     .add-meal {
         margin-top: 20px;
         display: flex;

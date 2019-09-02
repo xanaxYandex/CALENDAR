@@ -13,7 +13,7 @@ const appRoutes: Routes = [
     { path: 'calendar', component: CalendarComponent },
     { path: 'settings', component: SettingsComponent },
     { path: 'new', component: NewMealComponent },
-    { path: 'current', component: CurrentMealComponent },
+    { path: 'selected', component: CurrentMealComponent },
     { path: 'day/:numberOfDay', component: DayModalComponent }
 ];
 

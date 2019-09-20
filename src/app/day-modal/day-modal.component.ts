@@ -1,7 +1,7 @@
-import { HOURS } from '../data/data';
-import { MainService } from '../main.service';
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import {HOURS} from '../data/data';
+import {MainService} from '../main.service';
+import {Component, OnInit, Output, EventEmitter} from '@angular/core';
+import {Router, ActivatedRoute} from '@angular/router';
 
 @Component({
     selector: 'app-day-modal',
@@ -23,7 +23,8 @@ export class DayModalComponent implements OnInit {
         Sun: 'Sunday'
     };
 
-    constructor(private mainService: MainService, private router: Router, private route: ActivatedRoute) { }
+    constructor(private mainService: MainService, private router: Router, private route: ActivatedRoute) {
+    }
 
     public ngOnInit(): void {
         this.route.params.subscribe(params => {
@@ -40,7 +41,7 @@ export class DayModalComponent implements OnInit {
     }
 
     public backToCalendar(): void {
-        this.router.navigate(['/calendar', { isCanceled: true }]);
+        this.router.navigate(['/calendar', {isCanceled: true}]);
     }
 
 }

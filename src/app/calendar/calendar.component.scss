@@ -24,7 +24,7 @@
         font: normal 14px/16px Roboto Condensed;
 
         .add-ingestion {
-            box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 4px 4px rgba(0, 0, 0, 0.2);
             z-index: 7;
             position: fixed;
             bottom: 10px;
@@ -46,7 +46,7 @@
         .hours {
             background: white;
             z-index: 8;
-            padding: 80px 0px 0px 10px;
+            padding: 80px 0 0 10px;
             width: 40px;
             display: flex;
             flex-direction: column;
@@ -57,12 +57,12 @@
                 p {
                     font-weight: 300;
                     color: #413F3F;
-                    margin: 0px;
+                    margin: 0;
                 }
             }
         }
 
-        .wrapCalConent {
+        .wrapCalContent {
             display: flex;
             padding-left: 20px;
         }
@@ -73,7 +73,7 @@
             .text {
                 padding-top: 5px;
                 position: sticky;
-                top: 0px;
+                top: 0;
                 z-index: 9;
                 height: 70px;
                 width: 50px;
@@ -81,13 +81,13 @@
 
                 p {
                     font-weight: 700;
-                    margin: 0px 0px 10px 12px;
+                    margin: 0 0 10px 12px;
                 }
 
                 div {
                     p {
                         font-weight: 700;
-                        margin: 5px 0px 3px 12px;
+                        margin: 5px 0 3px 12px;
                     }
                 }
 
@@ -117,10 +117,10 @@
                     position: relative;
                     height: 96%;
                     width: 96%;
-                    margin: 1px 0px 0px 1px;
+                    margin: 1px 0 0 1px;
 
                     div {
-                        padding: 2px 0px 2px 2px;
+                        padding: 2px 0 2px 2px;
                         color: white;
                         font: 300 12px/14px Roboto Condensed;
                         display: flex;
@@ -152,7 +152,7 @@
         flex-direction: column;
 
         p {
-            margin: 5px 0px 0px 5px;
+            margin: 5px 0 0 5px;
             font: 700 14px/16px Roboto Condensed;
         }
     }

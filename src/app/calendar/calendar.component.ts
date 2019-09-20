@@ -1,4 +1,4 @@
-import { MainService, INewMeal } from './../main.service';
+import { MainService } from '../main.service';
 import { Component, OnInit } from '@angular/core';
 import { MONTH_NAMES } from '../data/data';
 import { range } from 'rxjs';
@@ -27,7 +27,9 @@ export class CalendarComponent implements OnInit {
     public monthNames: string[] = MONTH_NAMES;
     public dayCalories: object = {};
 
-    constructor(private mainService: MainService, private router: Router, private route: ActivatedRoute) { }
+    constructor(private mainService: MainService, private router: Router, private route: ActivatedRoute) {
+        this.setMondayOfCurrentWeek();
+    }
 
     public ngOnInit(): void {
         this.ingestions = this.mainService.getIngestions(this.currentDay);
@@ -59,6 +61,18 @@ export class CalendarComponent implements OnInit {
         });
     }
 
+    private setMondayOfCurrentWeek() {
+        if (this.daysArr[this.currentDay] === 'Mon') {
+            return;
+        } else {
+            let tempDay = this.currentDay;
+            while (this.daysArr[tempDay] !== 'Tue') {
+                tempDay--;
+            }
+            this.currentDay = tempDay;
+        }
+    }
+
     private updateDays(): void {
         this.currentWeekDays = [];
         this.keysArr = [];
@@ -71,6 +85,7 @@ export class CalendarComponent implements OnInit {
     }
 
     public addIngestion(day: number, hour: string = '07:00'): void {
+        console.log(1313);
         if (day <= this.date.getDate()) {
             this.mainService.newMeal.next({
                 day,

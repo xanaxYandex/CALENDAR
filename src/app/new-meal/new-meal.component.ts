@@ -1,6 +1,7 @@
-import { MainService, IIngestion } from './../main.service';
-import { Component, Output, OnInit, EventEmitter, Input } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { MainService } from '../main.service';
+import { Component, Output, OnInit, EventEmitter } from '@angular/core';
+import { Router } from '@angular/router';
+import {IIngestion} from '../models/interfaces';
 
 @Component({
     selector: 'app-new-meal',

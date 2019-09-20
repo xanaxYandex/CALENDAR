@@ -1,6 +1,6 @@
-import { HOURS } from './../data/data';
-import { MainService } from './../main.service';
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { HOURS } from '../data/data';
+import { MainService } from '../main.service';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({

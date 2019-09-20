@@ -12,12 +12,12 @@
             <div class="add-ingestion" (click)="addIngestion(date.getDate())">
                 <img src="../../assets/143506.png" alt="Plus">
             </div>
-            <div class="hours" (click)="changeWeek(currentDay + 7)">
+            <div class="hours">
                 <div *ngFor="let hour of hours">
                     <p>{{hour}}</p>
                 </div>
             </div>
-            <div class="wrapCalConent">
+            <div class="wrapCalContent">
                 <div *ngFor="let day of currentWeekDays; let i=index" class="day-net">
                     <div class="text">
                         <p [style.color]="dayCalories[day]['color']">{{dayCalories[day]['kcal']}}</p>
